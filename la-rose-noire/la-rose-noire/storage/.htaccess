@@ -1,0 +1,7 @@
+# CVs are private: never served directly. Staff download them through api/cv.php after signing in.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Deny from all
+</IfModule>
