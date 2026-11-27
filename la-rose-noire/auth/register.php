@@ -76,7 +76,7 @@ include __DIR__ . '/../components/header.php';
           <div class="caps-note d-none" role="status"><i class="bi bi-capslock-fill"></i> Caps Lock is on</div>
           <div class="meter" aria-hidden="true"><span></span></div>
           <div id="pwHelp" class="form-text" aria-live="polite">Use at least <?= MIN_PASSWORD ?> characters. A short sentence works well, like <em>"blue tea at five"</em>.</div></div>
-        <div class="mb-4"><label class="form-label" for="confirm">Type the password again <span class="req">*</span></label>
+        <div class="mb-4"><label class="form-label" for="confirm">Confirm Password<span class="req">*</span></label>
           <input class="form-control form-control-lg" type="password" id="confirm" name="confirm" required autocomplete="new-password" maxlength="72">
           <div id="matchNote" class="form-text" aria-live="polite"></div>
           <ul class="pw-rules" aria-hidden="true"><li data-rule="len"><i class="bi bi-circle"></i> At least <?= MIN_PASSWORD ?> characters</li><li data-rule="match"><i class="bi bi-circle"></i> Both passwords match</li></ul></div>
