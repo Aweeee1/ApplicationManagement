@@ -53,7 +53,7 @@ include __DIR__ . '/../components/header.php';
 ?>
 <div class="auth-wrap">
   <aside class="auth-side" aria-hidden="true">
-    <img src="<?= url('assets/img/logo.svg') ?>" alt="" width="84" height="84" class="spin-slow">
+    <img src="<?= url('assets/img/logo.jpg') ?>" alt="" width="84" height="84" class="spin-slow">
     <h2 class="brand-title">Welcome back</h2>
     <p>Sign in to review applications and keep the team on track.</p>
     <ul class="auth-points"><li><i class="bi bi-shield-lock"></i> Your sign-in is protected</li><li><i class="bi bi-clock-history"></i> Signs you out when you are away</li><li><i class="bi bi-eye"></i> Show your password while typing</li></ul>
