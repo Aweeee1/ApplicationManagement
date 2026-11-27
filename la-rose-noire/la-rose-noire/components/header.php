@@ -15,7 +15,7 @@ if ($user) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title><?= e($title ?? APP_NAME) ?> · <?= APP_NAME ?></title>
-<link rel="icon" href="<?= url('assets/img/logo.svg') ?>" type="image/svg+xml">
+<link rel="icon" href="<?= url('assets/img/logo.jpg') ?>" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@ d.setAttribute('data-bs-theme',p==='dark'||(p==='auto'&&matchMedia('(prefers-col
 <nav class="navbar navbar-expand-lg app-nav sticky-top" aria-label="Main">
   <div class="container-xl">
     <a class="navbar-brand brand-title d-flex align-items-center gap-2" href="<?= $user ? url('pages/dashboard.php') : url('index.php') ?>">
-      <img src="<?= url('assets/img/logo.svg') ?>" alt="" width="34" height="34"><?= APP_NAME ?></a>
+      <img src="<?= url('assets/img/logo.jpg') ?>" alt="" width="34" height="34"><?= APP_NAME ?></a>
     <div class="d-flex align-items-center gap-2 ms-auto order-lg-2">
       <?php if ($user): ?><button class="btn btn-outline-secondary" data-bs-toggle="offcanvas" data-bs-target="#prefsPanel" aria-controls="prefsPanel"><i class="bi bi-palette"></i><span class="d-none d-sm-inline"> Customize</span></button><?php endif; ?>
       <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-label="Open menu"><span class="navbar-toggler-icon"></span></button>

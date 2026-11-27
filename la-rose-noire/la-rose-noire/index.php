@@ -18,7 +18,7 @@ include __DIR__ . '/components/header.php';
       <p class="hero-copy">Explore our current openings and apply for the role that matches your skills and experience.</p>
       <p class="open-count"><strong><?= $n ?></strong> open <?= $n === 1 ? 'role' : 'roles' ?></p>
     </div>
-    <img class="hero-rose spin-slow" src="<?= url('assets/img/logo.svg') ?>" alt="" width="260" height="260">
+    <img class="hero-rose spin-slow" src="<?= url('assets/img/logo.jpg') ?>" alt="" width="260" height="260">
   </section>
 
   <div class="career-tools">

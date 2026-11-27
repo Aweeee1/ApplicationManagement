@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$closed) {
     $pw = $_POST['password'] ?? '';
     $ip = client_ip();
     if (!csrf_ok()) $errors[] = 'This page was open for too long. Please try again.';
+  
     elseif (!empty($_POST['website']) || time() - (int)($_SESSION['form_shown'] ?? 0) < 3) $errors[] = 'Please take a moment to fill in the form, then try again.'; // hidden trap field + too-fast submit = bot
     elseif (!$first && ($w = throttle_wait('signup-ip', $ip, 3, 60))) $errors[] = 'Too many sign-up requests from this device. Please try again in ' . wait_text($w) . '.';
     if (!$errors && $needKey && !hash_equals(SETUP_KEY, (string)($_POST['setup_key'] ?? ''))) $errors[] = 'The setup key is not right. You can find it in connection/config.php.';
@@ -47,7 +48,7 @@ include __DIR__ . '/../components/header.php';
 ?>
 <div class="auth-wrap">
   <aside class="auth-side" aria-hidden="true">
-    <img src="<?= url('assets/img/logo.svg') ?>" alt="" width="84" height="84" class="spin-slow">
+    <img src="<?= url('assets/img/logo.jpg') ?>" alt="" width="84" height="84" class="spin-slow">
     <h2 class="brand-title">Join the team</h2>
     <p>Ask for a staff account. It only takes a minute.</p>
     <ul class="auth-points"><li><i class="bi bi-1-circle"></i> Fill in the form</li><li><i class="bi bi-2-circle"></i> An administrator approves it</li><li><i class="bi bi-3-circle"></i> Sign in and get started</li></ul>
