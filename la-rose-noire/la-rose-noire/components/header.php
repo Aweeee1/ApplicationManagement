@@ -48,7 +48,7 @@ d.setAttribute('data-bs-theme',p==='dark'||(p==='auto'&&matchMedia('(prefers-col
           <a class="btn btn-outline-primary" href="<?= url('auth/logout.php') ?>"><i class="bi bi-box-arrow-right"></i> Sign out</a>
         <?php else: ?>
           <a class="btn btn-outline-primary" href="<?= url('auth/login.php') ?>">Sign in</a>
-          <?php if (SIGNUP_OPEN): ?><a class="btn btn-primary" href="<?= url('auth/register.php') ?>">Sign up</a><?php endif; ?>
+          <?php if (SIGNUP_OPEN): ?><a class="btn btn-primary" href="<?= url('auth/register.php') ?>">Login</a><?php endif; ?>
         <?php endif; ?>
       </div>
     </div>
