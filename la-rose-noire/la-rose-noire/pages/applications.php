@@ -8,7 +8,7 @@ $where = []; $params = [];
 if ($q !== '') { $where[] = '(applicant_name LIKE ? OR email LIKE ? OR position LIKE ?)'; array_push($params, "%$q%", "%$q%", "%$q%"); }
 if ($status) { $where[] = 'status = ?'; $params[] = $status; }
 if ($source) { $where[] = 'source = ?'; $params[] = $source; }
-$st = db()->prepare('SELECT * FROM applications' . ($where ? ' WHERE ' . implode(' AND ', $where) : '') . ' ORDER BY created_at DESC, id DESC LIMIT 500');
+$st = db()->prepare('SELECT id, applicant_name, email, phone, position, status, notes, source, cv_file, cv_name, self_updated_at, secret_expires_at, created_by, created_at, updated_at FROM applications' . ($where ? ' WHERE ' . implode(' AND ', $where) : '') . ' ORDER BY created_at DESC, id DESC LIMIT 500');
 $st->execute($params);
 $rows = $st->fetchAll();
 $title = 'Applications';
@@ -35,7 +35,7 @@ $api = url('api/applications.php');
   <tbody>
   <?php foreach ($rows as $r): ?>
     <tr id="row-<?= $r['id'] ?>">
-      <td><span class="fw-medium"><?= e($r['applicant_name']) ?></span><?= $r['source'] === 'public' ? ' <span class="badge text-bg-light border">Web</span>' : '' ?><small class="d-md-none d-block text-body-secondary"><?= e($r['position']) ?></small></td>
+      <td><span class="fw-medium"><?= e($r['applicant_name']) ?></span><?= $r['source'] === 'public' ? ' <span class="badge text-bg-light border">Web</span>' : '' ?><?= !empty($r['self_updated_at']) ? ' <span class="badge text-bg-info" title="The applicant updated their own details on ' . e($r['self_updated_at']) . '"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Edited by applicant</span>' : '' ?><small class="d-md-none d-block text-body-secondary"><?= e($r['position']) ?></small></td>
       <td class="d-none d-md-table-cell"><?= e($r['position']) ?></td>
       <td class="d-none d-lg-table-cell"><?= e($r['email']) ?><small class="d-block text-body-secondary"><?= e($r['phone']) ?></small></td>
       <td><?= badge($r['status']) ?></td>

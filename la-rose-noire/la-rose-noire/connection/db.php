@@ -28,6 +28,9 @@ function db(): PDO {
         source ENUM('staff','public') NOT NULL DEFAULT 'staff',
         cv_file VARCHAR(64) NULL,
         cv_name VARCHAR(150) NULL,
+        self_updated_at DATETIME NULL,
+        secret_hash CHAR(64) NULL UNIQUE,
+        secret_expires_at DATETIME NULL,
         created_by INT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -56,5 +59,7 @@ function db(): PDO {
     }
     if (!$pdo->query("SHOW COLUMNS FROM users LIKE 'prefs'")->fetch()) $pdo->exec('ALTER TABLE users ADD prefs TEXT NULL');   // older installs
     if (!$pdo->query("SHOW COLUMNS FROM applications LIKE 'cv_file'")->fetch()) $pdo->exec('ALTER TABLE applications ADD cv_file VARCHAR(64) NULL, ADD cv_name VARCHAR(150) NULL');   // older installs
+    if (!$pdo->query("SHOW COLUMNS FROM applications LIKE 'self_updated_at'")->fetch()) $pdo->exec('ALTER TABLE applications ADD self_updated_at DATETIME NULL');   // older installs
+    if (!$pdo->query("SHOW COLUMNS FROM applications LIKE 'secret_hash'")->fetch()) $pdo->exec('ALTER TABLE applications ADD secret_hash CHAR(64) NULL, ADD secret_expires_at DATETIME NULL, ADD UNIQUE KEY uq_secret_hash (secret_hash)');   // older installs
     return $pdo;
 }

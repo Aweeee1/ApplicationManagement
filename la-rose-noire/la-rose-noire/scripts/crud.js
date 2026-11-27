@@ -56,7 +56,7 @@
       if (res.status === 401 && document.body.dataset.auth) { location.href = base + '/auth/login.php'; return; }
       const data = await res.json();
       if (data.ok) {
-        if (form.dataset.reload === '0') { form.reset(); show(box, data.message, 'success'); }
+        if (form.dataset.reload === '0') { form.reset(); show(box, data.message, 'success'); form.dispatchEvent(new CustomEvent('form:ok', { detail: data })); }
         else { leaving = true; location.reload(); } // the API stored a flash message that the reloaded page shows
       } else {
         show(box, data.message || 'Something went wrong.', 'danger');

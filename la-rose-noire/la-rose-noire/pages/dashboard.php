@@ -6,7 +6,7 @@ $counts = array_fill_keys(STATUSES, 0);
 foreach ($pdo->query('SELECT status, COUNT(*) c FROM applications GROUP BY status') as $r) $counts[$r['status']] = (int)$r['c'];
 $total = array_sum($counts);
 $fromWeb = (int)$pdo->query("SELECT COUNT(*) FROM applications WHERE source='public'")->fetchColumn();
-$recent = $pdo->query('SELECT * FROM applications ORDER BY created_at DESC, id DESC LIMIT 6')->fetchAll();
+$recent = $pdo->query('SELECT id, applicant_name, email, phone, position, status, notes, source, cv_file, cv_name, self_updated_at, secret_expires_at, created_by, created_at, updated_at FROM applications ORDER BY created_at DESC, id DESC LIMIT 6')->fetchAll();
 if (is_admin()) {
     $userCount = (int)$pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
     $pending = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE status='pending'")->fetchColumn();

@@ -3,6 +3,7 @@
 define('IS_API', true);
 require __DIR__ . '/../auth/session.php';
 require_once __DIR__ . '/../services/applications.php';
+require_once __DIR__ . '/../services/secret.php';
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') json_out(['ok' => false, 'message' => 'Method not allowed.'], 405);
 // A file bigger than the server's post_max_size arrives as an empty request.
 if (empty($_POST) && empty($_FILES) && (int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) json_out(['ok' => false, 'message' => 'That file is too big. Please send a file under ' . MAX_CV_MB . ' MB.'], 413);
@@ -25,14 +26,17 @@ if ($up && $up['error'] !== UPLOAD_ERR_NO_FILE) {
 }
 
 $pdo = db();
+$key = secret_new();   // shown to the applicant once; only its hash is stored
 try {
-    $pdo->prepare("INSERT INTO applications (applicant_name, email, phone, position, status, notes, source, cv_file, cv_name) VALUES (?,?,?,?, 'Pending', ?, 'public', ?, ?)")
-        ->execute([$f['applicant_name'], $f['email'], $f['phone'], $f['position'], $f['notes'], $cv[0], $cv[1]]);
+    $pdo->prepare("INSERT INTO applications (applicant_name, email, phone, position, status, notes, source, cv_file, cv_name, secret_hash, secret_expires_at) VALUES (?,?,?,?, 'Pending', ?, 'public', ?, ?, ?, NOW() + INTERVAL " . (int)SECRET_KEY_DAYS . " DAY)")
+        ->execute([$f['applicant_name'], $f['email'], $f['phone'], $f['position'], $f['notes'], $cv[0], $cv[1], secret_hash($key)]);
 } catch (Throwable $e) {
     if ($cv[0]) @unlink(cv_path($cv[0]));   // do not leave an orphaned file behind
     throw $e;
 }
-audit('Public application', '#' . $pdo->lastInsertId() . " {$f['applicant_name']} ({$f['position']})" . ($cv[0] ? ' + CV' : ''), ['id' => null, 'name' => $f['applicant_name']]);
+$id = (int)$pdo->lastInsertId();
+$exp = $pdo->query("SELECT DATE_FORMAT(secret_expires_at, '%M %e, %Y, %l:%i %p') FROM applications WHERE id = $id")->fetchColumn();
+audit('Public application', "#$id {$f['applicant_name']} ({$f['position']})" . ($cv[0] ? ' + CV' : ''), ['id' => null, 'name' => $f['applicant_name']]);
 $_SESSION['last_apply'] = time();
 throttle_hit('apply-ip', client_ip());
-json_out(['ok' => true, 'message' => 'Thank you. We received your application and CV, and will be in touch.']);
+json_out(['ok' => true, 'message' => 'Thank you. We received your application and CV, and will be in touch.', 'secret_key' => $key, 'expires' => $exp, 'position' => $f['position']]);

@@ -78,3 +78,11 @@ The dashboard, applications, users and audit pages now use the same dark panels,
 - Each file is checked by size, name and its real file contents, then saved under a random name in `storage/cvs/`. `storage/.htaccess` blocks direct web access (on Nginx, add a rule denying `/storage/`). Staff download files through **api/cv.php**, which needs sign-in and is recorded in the audit log.
 - Staff see a **CV** button on each application. Deleting an application deletes its file.
 - To allow bigger files, raise `upload_max_filesize` and `post_max_size` in `php.ini`, then `MAX_CV_MB`.
+
+## Round 7: secret key + Request help
+- When someone applies on the careers page, they are shown a **secret key** (like `ABCD-EFGH-JKLM-NPQR`) **once**, with a warning to save it. They can copy it or save it as a text file, and must tick "I have saved my secret key" before closing the window.
+- The careers page has a **Request help** button. The applicant enters their key, sees their application, and can change their name, email, phone, role, notes and CV. Changes are saved to the `applications` table, so they show on the admin Applications page straight away with an **Edited by applicant** badge, and an **Applicant updated details** entry is added to the audit log. Applicants can never change their status.
+- The key is valid for `SECRET_KEY_DAYS` (7) days after applying, and can be used as many times as needed until then. After that it is refused with a clear message.
+- Authentication: the database stores only a SHA-256 hash of the key (`applications.secret_hash`) and its expiry (`secret_expires_at`); the key itself is never stored, so it cannot be shown again or recovered by anyone, including admins. Wrong keys are limited to 10 per device per 15 minutes. The hash is never loaded into the admin pages.
+- Only applications made through the public form get a key. Applications added by staff, or made before this update, have none.
+- Existing databases upgrade themselves on the next page load (two new columns on `applications`). If you tried the earlier email-link version, you can remove its leftover table with `DROP TABLE IF EXISTS application_tokens;`.

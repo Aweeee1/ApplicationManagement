@@ -322,3 +322,10 @@ main > .d-flex.mb-3, main > .d-flex.mb-4 { margin-bottom: calc(2rem * var(--sp))
 .file-drop.has-file { border-style: solid; border-color: #15803d; } .file-drop.has-file > i { color: #15803d; animation: checkPop .45s ease both; }
 [data-bs-theme="dark"] .file-drop.has-file { border-color: #86efac; } [data-bs-theme="dark"] .file-drop.has-file > i { color: #86efac; }
 input:focus-visible + .file-drop { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* Secret key (shown after applying) and Request help */
+.key-panel:not([hidden]) { display: contents; }
+.secret-key { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(1.35rem, 5vw, 2rem); font-weight: 700; letter-spacing: .12em; text-align: center; padding: 1rem 1.25rem; border: 2px dashed var(--accent); border-radius: var(--r-ctl); background: color-mix(in srgb, var(--accent) 10%, var(--card-bg)); user-select: all; overflow-wrap: anywhere; }
+.key-input { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; }
+.key-input::placeholder { text-transform: none; letter-spacing: .05em; }
+.hero-hint { color: #d9c9d0; }

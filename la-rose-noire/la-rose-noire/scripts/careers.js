@@ -58,6 +58,36 @@
     const f = modal.querySelector('form'); f.reset(); f.elements.position.value = t;
     modal.querySelector('.js-job-title').textContent = t;
     const m = modal.querySelector('.form-msg'); m.className = 'alert form-msg d-none mb-0'; m.textContent = '';
+    showKey(false);
+  });
+
+  // After applying: show the secret key once, with a warning to save it
+  const keyPanel = modal.querySelector('.key-keyPanel'), applyForm = modal.querySelector('form'), keyBox = document.getElementById('secretKey');
+  const keySavedBox = document.getElementById('keySaved'), keyDoneBtn = document.getElementById('keyDone'), copyBtn = document.getElementById('keyCopy');
+  let keyData = null;
+  const showKey = on => {
+    keyPanel.hidden = !on;
+    [...applyForm.children].forEach(c => { if (c !== keyPanel && !c.matches('input, .d-none')) c.hidden = on; });
+    if (!on) { keyData = null; keyBox.textContent = ''; keySavedBox.checked = false; keyDoneBtn.disabled = true; copyBtn.lastElementChild.textContent = 'Copy key'; }
+  };
+  applyForm.addEventListener('form:ok', ev => {
+    const d = ev.detail; if (!d.secret_key) return;
+    keyData = d; keyBox.textContent = d.secret_key;
+    keyPanel.querySelector('.js-key-role').textContent = d.position; keyPanel.querySelector('.js-key-expires').textContent = d.expires;
+    showKey(true); keyPanel.querySelector('.modal-title').scrollIntoView({ block: 'nearest' }); keyBox.focus();
+  });
+  keySavedBox.addEventListener('change', () => { keyDoneBtn.disabled = !keySavedBox.checked; });
+  copyBtn.addEventListener('click', async () => {
+    if (!keyData) return;
+    try { await navigator.clipboard.writeText(keyData.secret_key); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents(keyBox); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); document.execCommand('copy'); }
+    copyBtn.lastElementChild.textContent = 'Copied!';
+  });
+  document.getElementById('keyDownload').addEventListener('click', () => {
+    if (!keyData) return;
+    const text = 'La Rose Noire - application secret key\r\n\r\nSecret key: ' + keyData.secret_key + '\r\nRole: ' + keyData.position + '\r\nValid until: ' + keyData.expires + '\r\n\r\nKeep this safe. Use it with the Request help button on the careers page to change your application.\r\n';
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' })); a.download = 'la-rose-noire-secret-key.txt';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   });
 
   // CV / resume picker: friendly file name, quick checks, drag and drop

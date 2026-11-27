@@ -17,6 +17,9 @@ const MAX_CV_MB         = 2;    // biggest CV a visitor can upload (PHP's own de
 const CV_REQUIRED       = true; // false = the CV is optional on the public form
 const MIN_PASSWORD      = 10;   // minimum password length (length matters more than symbols)
 
+// ---- Applicant secret key ----
+const SECRET_KEY_DAYS = 7;      // after applying, the applicant gets a secret key that lets them change their application for this many days
+
 const STATUSES   = ['Pending', 'Reviewing', 'Interview', 'Approved', 'Rejected'];
 const POSITIONS  = ['Front of House', 'Kitchen Team', 'Events Coordinator', 'Marketing Associate']; // shown on the public page
 
