@@ -62,7 +62,7 @@
   });
 
   // After applying: show the secret key once, with a warning to save it
-  const keyPanel = modal.querySelector('.key-keyPanel'), applyForm = modal.querySelector('form'), keyBox = document.getElementById('secretKey');
+  const keyPanel = modal.querySelector('.key-panel'), applyForm = modal.querySelector('form'), keyBox = document.getElementById('secretKey');
   const keySavedBox = document.getElementById('keySaved'), keyDoneBtn = document.getElementById('keyDone'), copyBtn = document.getElementById('keyCopy');
   let keyData = null;
   const showKey = on => {
